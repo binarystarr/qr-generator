@@ -32,6 +32,7 @@
     <div class="field"><p><label for="booking_date">Date</label><br><input type="text" id="booking_date" /></p></div>
     <div class="field"><p><label for="booking_time">Time</label><br>
         <select id="booking_time">
+            <option value="">Select a time</option>
             <option value="10am -12pm">10am - 12pm</option>
             <option value="1030am - 1230pm">1030am - 1230pm</option>
             <option value="1230pm - 230pm">1230pm - 230pm</option>
@@ -124,11 +125,6 @@
 
 
            // BOOKING CONFIRMATION
-           // first off, lets create the content for the textarea
-           let bookingConfirmationMsg = 'I confirm that a table has been booked on '+ bookingDate +' from ' + bookingTime + ' for ' + people + ' people. If you need to amend this booking, please either call the studio on 01372 742244 or email studio@happyglazeceramics.co.uk. Many thanks and see you then!';
-           // now set that as the value of the textbox so we capture it on the page
-           $('#confirm_msg').val(bookingConfirmationMsg);
-           // use our function to create the image src and apply it to the image
            $('#confirmation_qr').attr('src', createSrcFromMessage(phone, $('#confirm_msg').val()));
 
            // REMINDER
