@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        @media print {
+            [type="text"], label, textarea {
+                font-size: 12px;
+            }
+            h3 {
+                font-size: 15px;
+            }
+            .buttons {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="row">
+    <div class="field"><p><label for="name">Name</label><br><input type="text" id="name" /></p></div>
+    <div class="field"><p><label for="phone">Phone</label><br><input type="text" id="phone" /></p></div>
+    <div class="field"><p><label for="collection_ref">Collection ref</label><br><input type="text" id="collection_ref" /></p></div>
+    <div class="field"><p><label for="booking_date">Date</label><br><input type="text" id="booking_date" /></p></div>
+    <div class="field"><p><label for="booking_time">Time</label><br>
+        <select id="booking_time">
+            <option value="10am -12pm">10am - 12pm</option>
+            <option value="1030am - 1230pm">1030am - 1230pm</option>
+            <option value="1230pm - 230pm">1230pm - 230pm</option>
+            <option value="1pm - 3pm">1pm - 3pm</option>
+            <option value="3pm - 5pm">3pm - 5pm</option>
+            <option value="330pm - 530pm">330pm - 530pm</option>
+            <option value="530pm - 730pm">530pm - 730pm</option>
+            <option value="6pm - 9pm">6pm - 9pm</option>
+        </select>
+    </p></div>
+    <div class="field"><p><label for="People">People</label><br><input type="text" id="people" /></p></div>
+</div>
+
+<div class="row">
+    <div>
+        <h3>Booking confirmation</h3>
+        <textarea name="confirmMsg" id="confirm_msg" cols="30" rows="10">Hello {name} I confirm that a table has been booked on {booking_date} from {booking_time} for {people} people. If you need to amend this booking, please either call the studio on 01372 742244 or email studio@happyglazeceramics.co.uk. Many thanks and see you then!</textarea>
+        <p><img src="" id="confirmation_qr" /></p>
+    </div>
+    <div>
+        <h3>Booking reminder</h3>
+        <textarea name="reminderMsg" id="reminder_msg" cols="30" rows="10">Hello {name}, just confirming your booking for tomorrow at {booking_time} at Happy Glaze Ceramics for {people} people. See you then!</textarea>
+        <p><img src="" id="reminder_qr" /></p>
+    </div>
+    <div>
+        <h3>Ready for collection</h3>
+        <textarea name="ready_msg" id="ready_msg" cols="30" rows="10">Hello {name}, your items are ready to collect from Happy Glaze Ceramics. Please collect ASAP and quote your reference number {collection_ref} when you collect.  Check the website for  opening hours. See you soon!</textarea>
+        <p><img src="" id="ready_qr" /></p>
+    </div>
+    <div>
+        <h3>Same evening - review</h3>
+        <textarea name="thank_you" id="thank_you_msg" cols="30" rows="10">Hello {name}, wingis, add the text here polese</textarea>
+        <p><img src="" id="thank_you_qr" /></p>
+    </div>
+</div>
+
+<div class="row buttons">
+    <button id="generate">Generate</button>
+    <button onClick="window.print()">Print</button>
+</div>
+
+
+<script>
+
+    $(function(){
+        // set up some common functions
+        function createSrcFromMessage(phone, message){
+            // encode the message
+            encodedMessage = encodeURIComponent(message);
+
+            // combine it with the phone to make the src
+            return 'http://api.qrserver.com/v1/create-qr-code/?size=200x200&data=sms%3A' + phone + '%3Fbody%3D' + encodedMessage;
+        }
+
+        // update messages are updated as inputs are filled in
+        $('#name').on('change',function(){
+            let replaceWith = $(this).val();
+            $("#confirm_msg").text($("#confirm_msg").text().replace('{name}', replaceWith));
+            $("#reminder_msg").text($("#reminder_msg").text().replace('{name}', replaceWith));
+            $("#ready_msg").text($("#ready_msg").text().replace('{name}', replaceWith));
+            $("#thank_you_msg").text($("#thank_you_msg").text().replace('{name}', replaceWith));
+        });
+        $('#booking_date').on('change',function(){
+            let replaceWith = $(this).val();
+            $("#confirm_msg").text($("#confirm_msg").text().replace('{booking_date}', replaceWith));
+        });
+        $('#booking_time').on('change',function(){
+            let replaceWith = $(this).val();
+            $("#confirm_msg").text($("#confirm_msg").text().replace('{booking_time}', replaceWith));
+            $("#reminder_msg").text($("#reminder_msg").text().replace('{booking_time}', replaceWith));
+        });
+        $('#people').on('change',function(){
+            let replaceWith = $(this).val();
+            $("#confirm_msg").text($("#confirm_msg").text().replace('{people}', replaceWith));
+            $("#reminder_msg").text($("#reminder_msg").text().replace('{people}', replaceWith));
+        });
+
+        // update the ready for collection message with the ref number when its added
+        $('#collection_ref').on('change',function(){
+            let replaceWith = $(this).val();
+            $("#ready_msg").text($("#ready_msg").text().replace('{collection_ref}', replaceWith));
+        });
+
+       $('#generate').click(function(){
+           // grab values from the fields so we can use them more easily in the code
+           let phone = $('#phone').val();
+           let bookingDate = $('#booking_date').val();
+           let bookingTime = $('#booking_time').val();
+           let people = $('#people').val();
+
+
+           // BOOKING CONFIRMATION
+           // first off, lets create the content for the textarea
+           let bookingConfirmationMsg = 'I confirm that a table has been booked on '+ bookingDate +' from ' + bookingTime + ' for ' + people + ' people. If you need to amend this booking, please either call the studio on 01372 742244 or email studio@happyglazeceramics.co.uk. Many thanks and see you then!';
+           // now set that as the value of the textbox so we capture it on the page
+           $('#confirm_msg').val(bookingConfirmationMsg);
+           // use our function to create the image src and apply it to the image
+           $('#confirmation_qr').attr('src', createSrcFromMessage(phone, $('#confirm_msg').val()));
+
+           // REMINDER
+           $('#reminder_qr').attr('src', createSrcFromMessage(phone, $('#reminder_msg').val()));
+
+           // READY FOR COLLECTION
+           $('#ready_qr').attr('src', createSrcFromMessage(phone, $('#ready_msg').val()));
+
+           // THANK YOU
+           $('#thank_you_qr').attr('src', createSrcFromMessage(phone, $('#thank_you_msg').val()));
+
+
+
+       })
+    });
+</script>
+</body>
+</html>
