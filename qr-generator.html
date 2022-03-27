@@ -17,7 +17,7 @@
             h3 {
                 font-size: 15px;
             }
-            .buttons {
+            .buttons, textarea {
                 display: none;
             }
         }
@@ -49,12 +49,12 @@
 <div class="row">
     <div>
         <h3>Booking confirmation</h3>
-        <textarea name="confirmMsg" id="confirm_msg" cols="30" rows="10">Hello {name} I confirm that a table has been booked on {booking_date} from {booking_time} for {people} people. If you need to amend this booking, please either call the studio on 01372 742244 or email studio@happyglazeceramics.co.uk. Many thanks and see you then!</textarea>
+        <textarea name="confirmMsg" id="confirm_msg" cols="30" rows="10">Hello {name}, Many thanks for your booking at Happy Glaze Ceramics.  I confirm that a table has been booked on {booking_date} from {booking_time} for {people} people. If you need to amend this booking, please either call the studio on 01372 742244 or email studio@happyglazeceramics.co.uk as replies to this text message aren't monitored. Many thanks and see you then!</textarea>
         <p><img src="" id="confirmation_qr" /></p>
     </div>
     <div>
         <h3>Booking reminder</h3>
-        <textarea name="reminderMsg" id="reminder_msg" cols="30" rows="10">Hello {name}, just confirming your booking for tomorrow at {booking_time} at Happy Glaze Ceramics for {people} people. See you then!</textarea>
+        <textarea name="reminderMsg" id="reminder_msg" cols="30" rows="10">Hello {name}, just confirming your booking for tomorrow at {booking_time} at Happy Glaze Ceramics for {people} people. If you are unable to attend or need to amend the booking, please call the studio on 01372 742244 as replies to this text message aren’t monitored. See you then!</textarea>
         <p><img src="" id="reminder_qr" /></p>
     </div>
     <div>
@@ -64,7 +64,7 @@
     </div>
     <div>
         <h3>Same evening - review</h3>
-        <textarea name="thank_you" id="thank_you_msg" cols="30" rows="10">Hello {name}, wingis, add the text here polese</textarea>
+        <textarea name="thank_you" id="thank_you_msg" cols="30" rows="10">Hello {name}, Thank you for visiting Happy Glaze Ceramics today.  We do hope you had a great time.  Could I ask you to please leave feedback by clicking here xxxx.  Thanks and see you soon!</textarea>
         <p><img src="" id="thank_you_qr" /></p>
     </div>
 </div>
